@@ -1,13 +1,21 @@
 package com.dafakamatt.sportnews;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ArticleAdaptor extends ArrayAdapter<Article> {
     public ArticleAdaptor(Context context, ArrayList<Article> articles) {
@@ -34,8 +42,13 @@ public class ArticleAdaptor extends ArrayAdapter<Article> {
         TextView articleNameTextView = listItemView.findViewById(R.id.article_title_text_view);
         TextView sectionTextView = listItemView.findViewById(R.id.section_text_view);
 
+        // Modifying date from filename format to DD/MM/YYYY so it looks prettier to the end user:
+        String currentArticlePubDate = currentArticle.getPublicationDate();
+        String shortDateBackwards = currentArticlePubDate.substring(0,10);
+        String shortDate = formatDate(shortDateBackwards);
+
         // Setting appropriate text into each view:
-        dateTextView.setText(currentArticle.getPublicationDate());
+        dateTextView.setText(shortDate);
         articleNameTextView.setText(currentArticle.getArticlename());
         sectionTextView.setText(currentArticle.getSectionName());
 
@@ -43,5 +56,18 @@ public class ArticleAdaptor extends ArrayAdapter<Article> {
         return listItemView;
     }
 
-
+    // I needed some help here converting date from "yyyy-MM-dd" to dd/MM/yyyy
+    // This stackoverflow post helped me out here:
+    // https://stackoverflow.com/questions/17324060/converting-yyyy-mm-dd-into-dd-mm-yyyy
+    private String formatDate (String strDate) {
+        DateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat outFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = null;
+        try {
+            date = inFormat.parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return outFormat.format(date);
+    }
 }

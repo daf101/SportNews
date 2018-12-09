@@ -2,6 +2,7 @@ package com.dafakamatt.sportnews;
 
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -110,9 +111,24 @@ public final class RestQueryUtils {
         try {
             // Storing response string into a JSON Object:
             JSONObject jsonResponse = new JSONObject(articleJson);
-
-            Log.i("JSONMonitoring","Value of jsonResponse is: " + jsonResponse.toString());
             // Expanding a level:
+            JSONObject jsonTopResponse = jsonResponse.getJSONObject("response");
+            // Expanding a level:
+            JSONArray jsonArrResults = jsonTopResponse.getJSONArray("results");
+
+            // Looping through each article, then adding the appropriate data into a
+            // article object.
+            for (int i = 0; i < jsonArrResults.length(); i ++) {
+                JSONObject jsonObjArticle = jsonArrResults.getJSONObject(i);
+                String webTitle = jsonObjArticle.getString("webTitle");
+                String date = jsonObjArticle.getString("webPublicationDate");
+                String section = jsonObjArticle.getString("sectionName");
+                String articleUrl = jsonObjArticle.getString("webUrl");
+                articles.add(new Article(webTitle,section,date,articleUrl));
+                Log.i("RestQueryUtils","Value of webTitle is: " + webTitle);
+
+            }
+
 
 
 
