@@ -2,7 +2,6 @@ package com.dafakamatt.sportnews;
 
 import android.content.Context;
 import android.content.AsyncTaskLoader;
-import android.util.Log;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class ArticleLoader extends AsyncTaskLoader<List<Article>> {
     // forceLoad, as required by loaders.
     @Override
     protected void onStartLoading() {
-       forceLoad();
+        forceLoad();
     }
 
     // Start running tools in the RestQueryUtils class.
@@ -27,7 +26,7 @@ public class ArticleLoader extends AsyncTaskLoader<List<Article>> {
     @Override
     public List<Article> loadInBackground() {
 
-        if(mQueryUrl == null) {
+        if (mQueryUrl == null) {
             return null;
         }
         // Making the Rest Request in our RestQueryUtils class:

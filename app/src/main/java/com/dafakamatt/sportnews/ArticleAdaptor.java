@@ -1,9 +1,6 @@
 package com.dafakamatt.sportnews;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +10,12 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class ArticleAdaptor extends ArrayAdapter<Article> {
     public ArticleAdaptor(Context context, ArrayList<Article> articles) {
-        super(context,0,articles);
+        super(context, 0, articles);
     }
 
 
@@ -27,9 +23,9 @@ public class ArticleAdaptor extends ArrayAdapter<Article> {
     public View getView(int position, View convertView, ViewGroup parent) {
         // Inflating the article_list_item.xml file:
         View listItemView = convertView;
-        if(listItemView == null) {
+        if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.article_list_item,parent,false);
+                    R.layout.article_list_item, parent, false);
 
         }
 
@@ -44,7 +40,7 @@ public class ArticleAdaptor extends ArrayAdapter<Article> {
 
         // Modifying date from filename format to DD/MM/YYYY so it looks prettier to the end user:
         String currentArticlePubDate = currentArticle.getPublicationDate();
-        String shortDateBackwards = currentArticlePubDate.substring(0,10);
+        String shortDateBackwards = currentArticlePubDate.substring(0, 10);
         String shortDate = formatDate(shortDateBackwards);
 
         // Setting appropriate text into each view:
@@ -59,7 +55,7 @@ public class ArticleAdaptor extends ArrayAdapter<Article> {
     // I needed some help here converting date from "yyyy-MM-dd" to dd/MM/yyyy
     // This stackoverflow post helped me out:
     // https://stackoverflow.com/questions/17324060/converting-yyyy-mm-dd-into-dd-mm-yyyy
-    private String formatDate (String strDate) {
+    private String formatDate(String strDate) {
         DateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat outFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = null;

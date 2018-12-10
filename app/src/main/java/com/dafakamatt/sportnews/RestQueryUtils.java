@@ -122,17 +122,17 @@ public final class RestQueryUtils {
         return output.toString();
     }
 
-    public static ArrayList<Article> extractArticles(String articleJson) {
+    public static ArrayList<Article> extractArticles(String strJsonResponse) {
 
         ArrayList<Article> articles = new ArrayList<>();
 
         try {
             // Storing response string into a JSON Object:
-            JSONObject jsonResponse = new JSONObject(articleJson);
+            JSONObject objJsonResponse = new JSONObject(strJsonResponse);
             // Expanding a level:
-            JSONObject jsonTopResponse = jsonResponse.getJSONObject("response");
+            JSONObject objJsonTopLevel = objJsonResponse.getJSONObject("response");
             // Expanding a level:
-            JSONArray jsonArrResults = jsonTopResponse.getJSONArray("results");
+            JSONArray jsonArrResults = objJsonTopLevel.getJSONArray("results");
 
             // Looping through each article, then adding the appropriate data into a
             // article object.
@@ -143,12 +143,10 @@ public final class RestQueryUtils {
                 String section = jsonObjArticle.getString("sectionName");
                 String articleUrl = jsonObjArticle.getString("webUrl");
                 articles.add(new Article(webTitle, section, date, articleUrl));
-                Log.i("RestQueryUtils", "Value of webTitle is: " + webTitle);
-
             }
 
         } catch (JSONException e) {
-            Log.e(LOG_TAG, "Problem parsing the article json response");
+            Log.e(LOG_TAG, "Problem parsing the article json response", e);
         }
         return articles;
     }
