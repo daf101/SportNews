@@ -17,7 +17,7 @@ public class Article {
         mUrl = url;
     }
 
-    // Return Article details, when it's called by the Article Adaptor:
+    // Return Article details, when it's called by the Article Adaptor or other classes:
     public String getArticlename() {
         return mArticleName;
     }

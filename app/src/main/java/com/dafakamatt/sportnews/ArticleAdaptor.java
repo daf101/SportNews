@@ -57,7 +57,7 @@ public class ArticleAdaptor extends ArrayAdapter<Article> {
     }
 
     // I needed some help here converting date from "yyyy-MM-dd" to dd/MM/yyyy
-    // This stackoverflow post helped me out here:
+    // This stackoverflow post helped me out:
     // https://stackoverflow.com/questions/17324060/converting-yyyy-mm-dd-into-dd-mm-yyyy
     private String formatDate (String strDate) {
         DateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd");

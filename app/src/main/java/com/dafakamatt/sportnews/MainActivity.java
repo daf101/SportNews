@@ -1,10 +1,14 @@
 package com.dafakamatt.sportnews;
 
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -34,12 +38,27 @@ public class MainActivity extends AppCompatActivity
         // Applying adaptor to our ListView:
         articleListView.setAdapter(mAdaptor);
 
-        // Instantiating Loader Manager:
+        // Instantiating Loader Manager to pull REST data from the Guardian in the background
+        // away from the main UI thread:
         LoaderManager loaderManager = getLoaderManager();
         loaderManager.initLoader(ARTICLE_LOADER_ID, null, this);
         Log.i("LoaderMonitoring", "initLoader() called");
+
+        articleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Article currentArticle = mAdaptor.getItem(position);
+                String url = currentArticle.getUrl();
+                Intent openUrlInBrowser = new Intent(Intent.ACTION_VIEW);
+                openUrlInBrowser.setData(Uri.parse(url));
+                startActivity(openUrlInBrowser);
+            }
+        });
+
     }
 
+    // Create new article loader once instantiated. This will kick off the process to pull REST data
+    // and begin populating data in the ListView:
     @Override
     public Loader<List<Article>> onCreateLoader(int id, Bundle bundle) {
         return new ArticleLoader(this,GUARDIAN_REQUEST_URL);
