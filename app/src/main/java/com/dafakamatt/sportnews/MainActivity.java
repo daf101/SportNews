@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity
     // Instantiating global variables:
     private static final int ARTICLE_LOADER_ID = 1;
     private static final String GUARDIAN_REQUEST_URL =
-            "https://content.guardianapis.com/search?section=sport&page-size=50&api-key=test";
+            "http://content.guardianapis.com/search?q=debates&section=politics&show-tags=contributor&api-key=test";
     private ArticleAdaptor mAdaptor;
     private TextView mEmptyStateTextView;
     private TextView mNoInternetTextView;

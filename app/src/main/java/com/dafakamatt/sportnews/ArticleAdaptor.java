@@ -37,16 +37,29 @@ public class ArticleAdaptor extends ArrayAdapter<Article> {
         TextView dateTextView = listItemView.findViewById(R.id.date_text_view);
         TextView articleNameTextView = listItemView.findViewById(R.id.article_title_text_view);
         TextView sectionTextView = listItemView.findViewById(R.id.section_text_view);
+        TextView authorsTextView = listItemView.findViewById(R.id.author_text_view);
 
         // Modifying date from filename format to DD/MM/YYYY so it looks prettier to the end user:
         String currentArticlePubDate = currentArticle.getPublicationDate();
         String shortDateBackwards = currentArticlePubDate.substring(0, 10);
         String shortDate = formatDate(shortDateBackwards);
 
+        // Getting Author names. There maybe more than one author, so the code below
+        // will extract the names:
+        String[] authors = currentArticle.getAuthorNames();
+        StringBuilder strBuilder = new StringBuilder();
+        for (int i = 0; i < authors.length; i++) {
+            strBuilder.append(authors[i] + getContext().getResources().getString(R.string.author_name_separator));
+        }
+        String authorNamesWithExtraComma = strBuilder.toString();
+        // Removing the last space and comma.
+        String authorNamesForTextView = authorNamesWithExtraComma.substring(0, authorNamesWithExtraComma.length() - 2);
+
         // Setting appropriate text into each view:
         dateTextView.setText(shortDate);
         articleNameTextView.setText(currentArticle.getArticlename());
         sectionTextView.setText(currentArticle.getSectionName());
+        authorsTextView.setText(authorNamesForTextView);
 
         // Returning the listItemView:
         return listItemView;

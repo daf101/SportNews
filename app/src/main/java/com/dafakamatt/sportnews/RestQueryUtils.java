@@ -142,7 +142,21 @@ public final class RestQueryUtils {
                 String date = jsonObjArticle.getString("webPublicationDate");
                 String section = jsonObjArticle.getString("sectionName");
                 String articleUrl = jsonObjArticle.getString("webUrl");
-                articles.add(new Article(webTitle, section, date, articleUrl));
+                JSONArray tags = jsonObjArticle.getJSONArray("tags");
+
+                String[] authors = new String[tags.length()];
+
+                // Getting Author Name(s)
+                for (int j = 0; j < tags.length(); j++) {
+                    JSONObject tag = tags.getJSONObject(j);
+                    String authorName = tag.getString("webTitle");
+                    authors[j] = authorName;
+                    Log.i("author value", authors[j]);
+                }
+
+                Log.i("Restqueryutils", "Value of tags is: " + tags.toString());
+
+                articles.add(new Article(webTitle, authors, section, date, articleUrl));
             }
 
         } catch (JSONException e) {
