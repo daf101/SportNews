@@ -95,23 +95,26 @@ public class MainActivity extends AppCompatActivity
         // Getting an instance of our shared preferences:
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        // Accessing our shared preferences:
         String orderBy = sharedPreferences.getString(
                 getString(R.string.settings_order_by_key),
                 getString(R.string.settings_order_by_relevance_value)
         );
 
+        // Parsing the base URI and building it based on the what preferences the user prefers:
         Uri baseUri = Uri.parse(GUARDIAN_REQUEST_URL);
 
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
-        uriBuilder.appendQueryParameter("q","debates");
-        uriBuilder.appendQueryParameter("section","politics");
-        uriBuilder.appendQueryParameter("order-by",orderBy);
-        uriBuilder.appendQueryParameter("show-tags","contributor");
-        uriBuilder.appendQueryParameter("api-key","test");
+        uriBuilder.appendQueryParameter("q", "debates");
+        uriBuilder.appendQueryParameter("section", "politics");
+        uriBuilder.appendQueryParameter("order-by", orderBy);
+        uriBuilder.appendQueryParameter("show-tags", "contributor");
+        uriBuilder.appendQueryParameter("api-key", "test");
 
-        Log.i("ArticleLoader",uriBuilder.toString());
+        Log.i("ArticleLoader", uriBuilder.toString());
 
+        // Loading the article:
         return new ArticleLoader(this, uriBuilder.toString());
     }
 
@@ -144,7 +147,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.action_settings) {
+        if (id == R.id.action_settings) {
             Intent articleSettingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(articleSettingsIntent);
             return true;
