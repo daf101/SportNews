@@ -3,12 +3,16 @@ package com.dafakamatt.sportnews;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -25,7 +29,7 @@ public class MainActivity extends AppCompatActivity
     // Instantiating global variables:
     private static final int ARTICLE_LOADER_ID = 1;
     private static final String GUARDIAN_REQUEST_URL =
-            "http://content.guardianapis.com/search?q=debates&section=politics&show-tags=contributor&api-key=test";
+            "http://content.guardianapis.com/search?";
     private ArticleAdaptor mAdaptor;
     private TextView mEmptyStateTextView;
     private TextView mNoInternetTextView;
@@ -88,7 +92,27 @@ public class MainActivity extends AppCompatActivity
     // and begin populating data in the ListView:
     @Override
     public Loader<List<Article>> onCreateLoader(int id, Bundle bundle) {
-        return new ArticleLoader(this, GUARDIAN_REQUEST_URL);
+        // Getting an instance of our shared preferences:
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String orderBy = sharedPreferences.getString(
+                getString(R.string.settings_order_by_key),
+                getString(R.string.settings_order_by_relevance_value)
+        );
+
+        Uri baseUri = Uri.parse(GUARDIAN_REQUEST_URL);
+
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+
+        uriBuilder.appendQueryParameter("q","debates");
+        uriBuilder.appendQueryParameter("section","politics");
+        uriBuilder.appendQueryParameter("order-by",orderBy);
+        uriBuilder.appendQueryParameter("show-tags","contributor");
+        uriBuilder.appendQueryParameter("api-key","test");
+
+        Log.i("ArticleLoader",uriBuilder.toString());
+
+        return new ArticleLoader(this, uriBuilder.toString());
     }
 
     @Override
@@ -109,4 +133,25 @@ public class MainActivity extends AppCompatActivity
         mAdaptor.clear();
     }
 
+    //Inflating menu from mail.xml
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    // Intent to open the Settings Activity when Settings is selected:
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_settings) {
+            Intent articleSettingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(articleSettingsIntent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
+
+

@@ -3,4 +3,18 @@
     <string name="empty_state_message">There are currently no articles right now. Please try again later</string>
     <string name="no_internet">Please check your network connection</string>
     <string name="author_name_separator">,&#160;</string>
+    <string name="settings_menu_item">Settings</string>
+    <string name="settings_title">Article Settings</string>
+
+    <!--Preference Strings Labels -->
+    <string name="settings_order_by_label">Order By</string>
+    <string name="settings_order_by_key">Order By</string>
+    <string name="settings_order_by_relevance_label">Relevance</string>
+    <string name="settings_order_by_date_label">Date</string>
+
+    <!--Preference String Values -->
+    <string name="settings_order_by_relevance_value" translatable="false">relevance</string>
+    <string name="settings_order_by_date_value" translatable="false">newest</string>
+    <string name="settings_order_by_default" translatable="false">@string/settings_order_by_relevance_value</string>
+
 </resources>
